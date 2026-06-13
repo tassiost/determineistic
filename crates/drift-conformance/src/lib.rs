@@ -1,5 +1,5 @@
 use drift_protocol::WorldGenesis;
-use drift_runtime_cpu::{EventLog, run_simulation};
+use drift_runtime_cpu::{run_simulation, EventLog};
 
 /// Conformance test vector
 pub struct TestVector {

@@ -60,7 +60,10 @@ fn main() {
                 if let Some(final_output) = outputs.last() {
                     fs::write(&out_path, final_output.world_root)
                         .expect("Failed to write worldroot");
-                    println!("Wrote worldroot to: {}", out_path.display());
+                    println!(
+                        "Wrote worldroot to: {}",
+                        out_path.display()
+                    );
                 }
             }
         }
@@ -76,7 +79,7 @@ fn load_events(path: &PathBuf) -> EventLog {
     let bytes = fs::read(path).expect("Failed to read events file");
     let event_size = 8 + 2 + EVENT_PAYLOAD_SIZE; // 42 bytes per event
     let num_events = bytes.len() / event_size;
-    
+
     let mut event_log = EventLog::new();
     for i in 0..num_events {
         let start = i * event_size;

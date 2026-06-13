@@ -1,4 +1,7 @@
-use drift_protocol::{Event, WorldGenesis, UniverseDefinition, ArithmeticContract, OverflowMode, DivisionMode, PrecisionMode, SpatialSchedule};
+use drift_protocol::{
+    ArithmeticContract, DivisionMode, Event, OverflowMode, PrecisionMode, SpatialSchedule,
+    UniverseDefinition, WorldGenesis,
+};
 
 /// Custom binary encoding trait for deterministic serialization
 ///
@@ -54,10 +57,7 @@ pub fn encode_u32(val: u32, buf: &mut [u8]) {
 }
 
 pub fn decode_u32(buf: &[u8]) -> u32 {
-    (buf[0] as u32) << 0
-        | (buf[1] as u32) << 8
-        | (buf[2] as u32) << 16
-        | (buf[3] as u32) << 24
+    (buf[0] as u32) << 0 | (buf[1] as u32) << 8 | (buf[2] as u32) << 16 | (buf[3] as u32) << 24
 }
 
 pub fn encode_u16(val: u16, buf: &mut [u8]) {
@@ -188,8 +188,10 @@ mod tests {
         let original = Event {
             tick: 12345,
             event_type: 42,
-            payload: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
-                      17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32],
+            payload: [
+                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
+                23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+            ],
         };
 
         let mut buf = [0u8; 42];
