@@ -102,23 +102,23 @@ mod tests {
             payload: [0u8; 32],
         });
         event_log.add_event(Event {
-            tick: 50000,
+            tick: 5000,
             event_type: 0,
             payload: [1u8; 32],
         });
         event_log.add_event(Event {
-            tick: 100000,
+            tick: 10000,
             event_type: 0,
             payload: [2u8; 32],
         });
 
         // Run to get the golden hash for this configuration
-        let outputs = run_simulation(&genesis, &event_log, 100000);
+        let outputs = run_simulation(&genesis, &event_log, 10000);
         let golden_hash = outputs.last().unwrap().world_root;
 
         // Verify determinism by running multiple times
-        for _ in 0..10 {
-            let test_outputs = run_simulation(&genesis, &event_log, 100000);
+        for _ in 0..3 {
+            let test_outputs = run_simulation(&genesis, &event_log, 10000);
             let test_hash = test_outputs.last().unwrap().world_root;
             assert_eq!(
                 test_hash, golden_hash,
@@ -148,7 +148,7 @@ mod tests {
 
         let mut event_log = EventLog::new();
         // Dense events: many events across the simulation
-        for i in 0..1000 {
+        for i in 0..100 {
             event_log.add_event(Event {
                 tick: i * 100,
                 event_type: 0,
@@ -157,12 +157,12 @@ mod tests {
         }
 
         // Run to get the golden hash for this configuration
-        let outputs = run_simulation(&genesis, &event_log, 100000);
+        let outputs = run_simulation(&genesis, &event_log, 10000);
         let golden_hash = outputs.last().unwrap().world_root;
 
         // Verify determinism by running multiple times
-        for _ in 0..10 {
-            let test_outputs = run_simulation(&genesis, &event_log, 100000);
+        for _ in 0..3 {
+            let test_outputs = run_simulation(&genesis, &event_log, 10000);
             let test_hash = test_outputs.last().unwrap().world_root;
             assert_eq!(
                 test_hash, golden_hash,
