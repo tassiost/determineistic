@@ -1,7 +1,7 @@
 use clap::{Parser, Subcommand};
 use drift_codec::Decode;
-use drift_protocol::{Event, EVENT_PAYLOAD_SIZE, WorldGenesis};
-use drift_runtime_cpu::{EventLog, run_simulation};
+use drift_protocol::{Event, WorldGenesis, EVENT_PAYLOAD_SIZE};
+use drift_runtime_cpu::{run_simulation, EventLog};
 use std::fs;
 use std::path::PathBuf;
 
@@ -39,7 +39,12 @@ fn main() {
     let cli = Cli::parse();
 
     match cli.command {
-        Commands::Replay { genesis, events, out, ticks } => {
+        Commands::Replay {
+            genesis,
+            events,
+            out,
+            ticks,
+        } => {
             // Load genesis from binary file
             let genesis = load_genesis(&genesis);
 
@@ -60,10 +65,7 @@ fn main() {
                 if let Some(final_output) = outputs.last() {
                     fs::write(&out_path, final_output.world_root)
                         .expect("Failed to write worldroot");
-                    println!(
-                        "Wrote worldroot to: {}",
-                        out_path.display()
-                    );
+                    println!("Wrote worldroot to: {}", out_path.display());
                 }
             }
         }
