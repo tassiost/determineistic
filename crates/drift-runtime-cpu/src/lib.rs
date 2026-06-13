@@ -1,8 +1,8 @@
 use blake3::{Hash, Hasher};
 use drift_protocol::{
-    Event, REGION_SIZE, SpatialSchedule, TickOutput, WorldGenesis, WorldState, WORLD_SIZE,
+    Event, SpatialSchedule, TickOutput, WorldGenesis, WorldState, REGION_SIZE, WORLD_SIZE,
 };
-use drift_universe_margolus::{RuleTable, simulate_chunk};
+use drift_universe_margolus::{simulate_chunk, RuleTable};
 
 /// Event log - stores events indexed by tick
 pub struct EventLog {
@@ -23,7 +23,10 @@ impl EventLog {
     }
 
     pub fn get(&self, tick: u64) -> &[Event] {
-        self.events.get(tick as usize).map(|v| v.as_slice()).unwrap_or(&[])
+        self.events
+            .get(tick as usize)
+            .map(|v| v.as_slice())
+            .unwrap_or(&[])
     }
 }
 
@@ -57,7 +60,7 @@ fn compute_region_hashes(chunk_hashes: &[Hash]) -> Vec<Hash> {
     for region_idx in 0..num_regions {
         let start = region_idx * chunks_per_region;
         let end = (start + chunks_per_region).min(chunk_hashes.len());
-        
+
         let mut hasher = Hasher::new();
         for chunk_hash in &chunk_hashes[start..end] {
             hasher.update(chunk_hash.as_bytes());
