@@ -37,7 +37,7 @@ fn main() {
     // Encode event (42 bytes)
     let mut event_buf = [0u8; 42];
     event.encode(&mut event_buf);
-    fs::write("fixtures/events.bin", &event_buf).expect("Failed to write events.bin");
+    fs::write("fixtures/events.bin", event_buf).expect("Failed to write events.bin");
 
     println!("Created fixtures/genesis.bin (17 bytes)");
     println!("Created fixtures/events.bin (42 bytes)");
