@@ -1,10 +1,10 @@
-use drift_protocol::{Chunk, CHUNK_WIDTH, CHUNK_HEIGHT, SpatialSchedule};
+use drift_protocol::{Chunk, SpatialSchedule, CHUNK_HEIGHT, CHUNK_WIDTH};
 
 /// Margolus CA phases
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Phase {
-    A,  // (x even, y even)
-    B,  // (x odd, y odd)
+    A, // (x even, y even)
+    B, // (x odd, y odd)
 }
 
 /// 2x2 block encoding: 16-bit pattern (4 cells × 4 bits)
@@ -53,7 +53,7 @@ fn rotate_clockwise(block: Block) -> Block {
 /// Sorted by input bit-pattern ascending
 /// All 2^16 input patterns have explicit output
 pub struct RuleTable {
-    rules: [Block; 65536],  // 2^16 entries
+    rules: [Block; 65536], // 2^16 entries
 }
 
 impl RuleTable {

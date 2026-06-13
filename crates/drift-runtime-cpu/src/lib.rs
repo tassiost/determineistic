@@ -127,11 +127,11 @@ pub fn run_simulation(
     // Initialize world state with proper chunk grid
     let total_chunks = WORLD_SIZE * WORLD_SIZE; // 64x64 = 4096 chunks
     let mut world_state = WorldState::with_capacity(total_chunks);
-    
+
     for _ in 0..total_chunks {
         world_state.chunks.push(drift_protocol::Chunk::new());
     }
-    
+
     let mut outputs = Vec::new();
 
     for tick in 0..max_ticks {
@@ -148,7 +148,9 @@ pub fn run_simulation(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use drift_protocol::{ArithmeticContract, DivisionMode, OverflowMode, PrecisionMode, SpatialSchedule};
+    use drift_protocol::{
+        ArithmeticContract, DivisionMode, OverflowMode, PrecisionMode, SpatialSchedule,
+    };
 
     #[test]
     fn test_deterministic_simulation() {
