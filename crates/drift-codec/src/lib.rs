@@ -50,23 +50,23 @@ pub fn decode_u64(buf: &[u8]) -> u64 {
 }
 
 pub fn encode_u32(val: u32, buf: &mut [u8]) {
-    buf[0] = (val >> 0) as u8;
+    buf[0] = val as u8;
     buf[1] = (val >> 8) as u8;
     buf[2] = (val >> 16) as u8;
     buf[3] = (val >> 24) as u8;
 }
 
 pub fn decode_u32(buf: &[u8]) -> u32 {
-    (buf[0] as u32) << 0 | (buf[1] as u32) << 8 | (buf[2] as u32) << 16 | (buf[3] as u32) << 24
+    (buf[0] as u32) | (buf[1] as u32) << 8 | (buf[2] as u32) << 16 | (buf[3] as u32) << 24
 }
 
 pub fn encode_u16(val: u16, buf: &mut [u8]) {
-    buf[0] = (val >> 0) as u8;
+    buf[0] = val as u8;
     buf[1] = (val >> 8) as u8;
 }
 
 pub fn decode_u16(buf: &[u8]) -> u16 {
-    (buf[0] as u16) << 0 | (buf[1] as u16) << 8
+    (buf[0] as u16) | (buf[1] as u16) << 8
 }
 
 // Event encoding (fixed size: 8 + 2 + 32 = 42 bytes)

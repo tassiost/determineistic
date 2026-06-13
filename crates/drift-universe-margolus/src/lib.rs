@@ -61,8 +61,8 @@ impl RuleTable {
     /// Phase 0 uses a simple deterministic rule for conformance testing
     pub fn rotation() -> Self {
         let mut rules = [0u16; 65536];
-        for i in 0..65536 {
-            rules[i] = rotate_clockwise(i as u16);
+        for (i, rule) in rules.iter_mut().enumerate() {
+            *rule = rotate_clockwise(i as u16);
         }
         RuleTable { rules }
     }
