@@ -13,7 +13,7 @@ pub struct TestVector {
 /// Run conformance test
 pub fn run_conformance_test(vector: &TestVector) -> bool {
     let outputs = run_simulation(&vector.genesis, &vector.events, vector.max_ticks);
-    
+
     if let Some(final_output) = outputs.last() {
         final_output.world_root == vector.expected_world_root
     } else {
@@ -24,12 +24,11 @@ pub fn run_conformance_test(vector: &TestVector) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use drift_protocol::{Event, SpatialSchedule, WorldGenesis};
+    use drift_protocol::{
+        ArithmeticContract, DivisionMode, Event, OverflowMode, PrecisionMode, SpatialSchedule,
+        WorldGenesis,
+    };
     use drift_runtime_cpu::EventLog;
-    use drift_protocol::ArithmeticContract;
-    use drift_protocol::DivisionMode;
-    use drift_protocol::OverflowMode;
-    use drift_protocol::PrecisionMode;
 
     #[test]
     fn test_vector_01_basic() {
@@ -57,10 +56,9 @@ mod tests {
 
         // Expected WorldRoot from reference implementation
         let expected_hash: [u8; 32] = [
-            0xac, 0x66, 0xbb, 0x20, 0x36, 0xbe, 0xb6, 0x9b,
-            0xb2, 0x81, 0xf8, 0x51, 0xba, 0x1e, 0xb3, 0x9f,
-            0x90, 0x5e, 0xee, 0x61, 0x06, 0xf2, 0x2a, 0xe0,
-            0xf2, 0x8e, 0xae, 0x1c, 0x30, 0xd9, 0x79, 0x0d,
+            0xac, 0x66, 0xbb, 0x20, 0x36, 0xbe, 0xb6, 0x9b, 0xb2, 0x81, 0xf8, 0x51, 0xba, 0x1e,
+            0xb3, 0x9f, 0x90, 0x5e, 0xee, 0x61, 0x06, 0xf2, 0x2a, 0xe0, 0xf2, 0x8e, 0xae, 0x1c,
+            0x30, 0xd9, 0x79, 0x0d,
         ];
 
         let vector = TestVector {
@@ -71,6 +69,9 @@ mod tests {
             max_ticks: 10,
         };
 
-        assert!(run_conformance_test(&vector), "Conformance test failed: WorldRoot mismatch");
+        assert!(
+            run_conformance_test(&vector),
+            "Conformance test failed: WorldRoot mismatch"
+        );
     }
 }
