@@ -92,11 +92,17 @@ pub struct Chunk {
     pub data: Vec<u8>,
 }
 
-impl Chunk {
-    pub fn new() -> Self {
+impl Default for Chunk {
+    fn default() -> Self {
         Chunk {
             data: vec![0u8; (CHUNK_CELLS * CELL_BITS) / 8],
         }
+    }
+}
+
+impl Chunk {
+    pub fn new() -> Self {
+        Self::default()
     }
 
     pub fn get_cell(&self, x: usize, y: usize) -> u8 {
@@ -105,7 +111,7 @@ impl Chunk {
         let bit_offset = (index * CELL_BITS) % 8;
 
         let byte = self.data[byte_offset];
-        let mask = (0xF as u8) << bit_offset;
+        let mask = 0xF_u8 << bit_offset;
         ((byte & mask) >> bit_offset) & 0xF
     }
 
@@ -115,7 +121,7 @@ impl Chunk {
         let bit_offset = (index * CELL_BITS) % 8;
 
         let masked_value = (value & 0xF) << bit_offset;
-        let mask = !((0xF as u8) << bit_offset);
+        let mask = !(0xF_u8 << bit_offset);
         self.data[byte_offset] = (self.data[byte_offset] & mask) | masked_value;
     }
 }
