@@ -57,10 +57,7 @@ pub fn encode_u32(val: u32, buf: &mut [u8]) {
 }
 
 pub fn decode_u32(buf: &[u8]) -> u32 {
-    (buf[0] as u32)
-        | ((buf[1] as u32) << 8)
-        | ((buf[2] as u32) << 16)
-        | ((buf[3] as u32) << 24)
+    (buf[0] as u32) | ((buf[1] as u32) << 8) | ((buf[2] as u32) << 16) | ((buf[3] as u32) << 24)
 }
 
 pub fn encode_u16(val: u16, buf: &mut [u8]) {
