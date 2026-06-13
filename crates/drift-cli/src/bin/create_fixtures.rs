@@ -1,5 +1,8 @@
 use drift_codec::Encode;
-use drift_protocol::{Event, WorldGenesis, UniverseDefinition, ArithmeticContract, OverflowMode, DivisionMode, PrecisionMode, SpatialSchedule};
+use drift_protocol::{
+    ArithmeticContract, DivisionMode, Event, OverflowMode, PrecisionMode, SpatialSchedule,
+    UniverseDefinition, WorldGenesis,
+};
 use std::fs;
 
 fn main() {
