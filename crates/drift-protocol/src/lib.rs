@@ -72,6 +72,12 @@ pub struct WorldState {
     pub chunks: Vec<Chunk>,
 }
 
+impl Default for WorldState {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl WorldState {
     pub fn new() -> Self {
         WorldState { chunks: Vec::new() }
