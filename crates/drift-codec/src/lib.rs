@@ -40,13 +40,13 @@ pub fn encode_u64(val: u64, buf: &mut [u8]) {
 
 pub fn decode_u64(buf: &[u8]) -> u64 {
     (buf[0] as u64)
-        | (buf[1] as u64) << 8
-        | (buf[2] as u64) << 16
-        | (buf[3] as u64) << 24
-        | (buf[4] as u64) << 32
-        | (buf[5] as u64) << 40
-        | (buf[6] as u64) << 48
-        | (buf[7] as u64) << 56
+        | ((buf[1] as u64) << 8)
+        | ((buf[2] as u64) << 16)
+        | ((buf[3] as u64) << 24)
+        | ((buf[4] as u64) << 32)
+        | ((buf[5] as u64) << 40)
+        | ((buf[6] as u64) << 48)
+        | ((buf[7] as u64) << 56)
 }
 
 pub fn encode_u32(val: u32, buf: &mut [u8]) {
