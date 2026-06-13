@@ -134,9 +134,15 @@ GitHub Actions workflow (`.github/workflows/ci.yml`) validates:
 
 ## Next Steps
 
-1. Add more complex Margolus rules
-2. Implement event application logic
-3. Add chunk initialization from genesis
-4. Scale to larger world sizes
-5. Add GPU runtime (Phase 1)
-6. Add WASM port (Phase 1)
+See `ROADMAP.md` for the complete development roadmap. The correct priority order is:
+
+1. **Scale Validation** - 10k → 100k → 1M chunk simulations, long tick runs (100k–10M ticks), mixed sparse/dense event loads, memory stress + cache pressure testing
+2. **Snapshot / Resume System** - Implement WorldSnapshot { tick, world_root, chunk_state }, save at tick N, resume from snapshot + event suffix, verify identical final WorldRoot
+3. **Event Log Evolution** - Define event ingestion rules, tick-bucketed ordering guarantees, late-event rejection policy, deterministic replay of partial logs
+4. **Conformance Expansion** - Add randomized seed generators, fuzzed event streams, differential replay testing, multi-run stability checks (1000× runs)
+5. **Performance Isolation Layer** - Instrument Margolus kernel time, chunk hashing cost, region aggregation cost, event application cost
+6. **WASM Runtime** - Portability layer, browser execution, client verification (only after steps 1-5)
+7. **GPU Runtime** - Parallel CA execution, chunk-level compute dispatch, strict parity validation vs CPU reference (only after steps 1-5)
+8. **Network / Distributed Layer** - Event propagation system, peer validation, chunk ownership / delegation (only after steps 1-7)
+
+**Important**: Do NOT jump to GPU or WASM yet. The system must first prove determinism survives scale, implement snapshot/resume for operational usability, and establish a performance baseline before adding execution environments.
