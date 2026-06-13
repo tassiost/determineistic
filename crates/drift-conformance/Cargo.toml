@@ -1,0 +1,9 @@
+[package]
+name = "drift-conformance"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+drift-protocol = { path = "../drift-protocol" }
+drift-codec = { path = "../drift-codec" }
+drift-runtime-cpu = { path = "../drift-runtime-cpu" }

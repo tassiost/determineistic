@@ -1,0 +1,10 @@
+[package]
+name = "drift-runtime-cpu"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+drift-protocol = { path = "../drift-protocol" }
+drift-codec = { path = "../drift-codec" }
+drift-universe-margolus = { path = "../drift-universe-margolus" }
+blake3 = { workspace = true }

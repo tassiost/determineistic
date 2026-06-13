@@ -1,0 +1,17 @@
+[workspace]
+members = [
+    "crates/drift-protocol",
+    "crates/drift-codec",
+    "crates/drift-universe-margolus",
+    "crates/drift-runtime-cpu",
+    "crates/drift-cli",
+    "crates/drift-conformance",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+
+[workspace.dependencies]
+blake3 = "1.5"
