@@ -74,4 +74,100 @@ mod tests {
             "Conformance test failed: WorldRoot mismatch"
         );
     }
+
+    #[test]
+    fn test_vector_02_scaling_sparse() {
+        // Phase 1: Chunk scaling stress test - sparse event distribution
+        // Tests determinism under scale with minimal event load
+        let genesis = WorldGenesis {
+            protocol_version: 0,
+            universe_definition: drift_protocol::UniverseDefinition {
+                protocol_version: 0,
+                universe_type_id: 1,
+                ruleset_id: 0,
+                arithmetic_contract: ArithmeticContract {
+                    overflow: OverflowMode::Wrap,
+                    division: DivisionMode::TruncateTowardZero,
+                    precision: PrecisionMode::IntegerOnly,
+                },
+                spatial_schedule: SpatialSchedule::RowMajor,
+            },
+        };
+
+        let mut event_log = EventLog::new();
+        // Sparse events: only a few events spread across many ticks
+        event_log.add_event(Event {
+            tick: 0,
+            event_type: 0,
+            payload: [0u8; 32],
+        });
+        event_log.add_event(Event {
+            tick: 50000,
+            event_type: 0,
+            payload: [1u8; 32],
+        });
+        event_log.add_event(Event {
+            tick: 100000,
+            event_type: 0,
+            payload: [2u8; 32],
+        });
+
+        // Run to get the golden hash for this configuration
+        let outputs = run_simulation(&genesis, &event_log, 100000);
+        let golden_hash = outputs.last().unwrap().world_root;
+
+        // Verify determinism by running multiple times
+        for _ in 0..10 {
+            let test_outputs = run_simulation(&genesis, &event_log, 100000);
+            let test_hash = test_outputs.last().unwrap().world_root;
+            assert_eq!(
+                test_hash, golden_hash,
+                "Determinism failed in scaling sparse test"
+            );
+        }
+    }
+
+    #[test]
+    fn test_vector_03_scaling_dense() {
+        // Phase 1: Chunk scaling stress test - dense event distribution
+        // Tests determinism under scale with high event load
+        let genesis = WorldGenesis {
+            protocol_version: 0,
+            universe_definition: drift_protocol::UniverseDefinition {
+                protocol_version: 0,
+                universe_type_id: 1,
+                ruleset_id: 0,
+                arithmetic_contract: ArithmeticContract {
+                    overflow: OverflowMode::Wrap,
+                    division: DivisionMode::TruncateTowardZero,
+                    precision: PrecisionMode::IntegerOnly,
+                },
+                spatial_schedule: SpatialSchedule::RowMajor,
+            },
+        };
+
+        let mut event_log = EventLog::new();
+        // Dense events: many events across the simulation
+        for i in 0..1000 {
+            event_log.add_event(Event {
+                tick: i * 100,
+                event_type: 0,
+                payload: [(i % 256) as u8; 32],
+            });
+        }
+
+        // Run to get the golden hash for this configuration
+        let outputs = run_simulation(&genesis, &event_log, 100000);
+        let golden_hash = outputs.last().unwrap().world_root;
+
+        // Verify determinism by running multiple times
+        for _ in 0..10 {
+            let test_outputs = run_simulation(&genesis, &event_log, 100000);
+            let test_hash = test_outputs.last().unwrap().world_root;
+            assert_eq!(
+                test_hash, golden_hash,
+                "Determinism failed in scaling dense test"
+            );
+        }
+    }
 }
