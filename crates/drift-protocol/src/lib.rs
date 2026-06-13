@@ -1,13 +1,13 @@
 // Phase 0 Constants
 pub const EVENT_PAYLOAD_SIZE: usize = 32;
-pub const REGION_SIZE: usize = 16;   // chunks per dimension
-pub const WORLD_SIZE: usize = 64;    // chunks per dimension
+pub const REGION_SIZE: usize = 16; // chunks per dimension
+pub const WORLD_SIZE: usize = 64; // chunks per dimension
 
 // Grid constants for Margolus CA
-pub const CHUNK_WIDTH: usize = 32;   // cells per chunk dimension
-pub const CHUNK_HEIGHT: usize = 32;  // cells per chunk dimension
-pub const CHUNK_CELLS: usize = CHUNK_WIDTH * CHUNK_HEIGHT;  // total cells per chunk
-pub const CELL_BITS: usize = 4;      // 4 bits per cell (16 states)
+pub const CHUNK_WIDTH: usize = 32; // cells per chunk dimension
+pub const CHUNK_HEIGHT: usize = 32; // cells per chunk dimension
+pub const CHUNK_CELLS: usize = CHUNK_WIDTH * CHUNK_HEIGHT; // total cells per chunk
+pub const CELL_BITS: usize = 4; // 4 bits per cell (16 states)
 
 // Core types
 
@@ -20,7 +20,7 @@ pub struct WorldGenesis {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UniverseDefinition {
     pub protocol_version: u32,
-    pub universe_type_id: u32,   // MARGOLUS_CA_V1
+    pub universe_type_id: u32, // MARGOLUS_CA_V1
     pub ruleset_id: u32,
     pub arithmetic_contract: ArithmeticContract,
     pub spatial_schedule: SpatialSchedule,
@@ -50,7 +50,7 @@ pub enum PrecisionMode {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SpatialSchedule {
-    RowMajor,  // Phase 0: ONLY RowMajor
+    RowMajor, // Phase 0: ONLY RowMajor
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -74,9 +74,7 @@ pub struct WorldState {
 
 impl WorldState {
     pub fn new() -> Self {
-        WorldState {
-            chunks: Vec::new(),
-        }
+        WorldState { chunks: Vec::new() }
     }
 
     pub fn with_capacity(capacity: usize) -> Self {
