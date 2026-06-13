@@ -9,6 +9,12 @@ pub struct EventLog {
     events: Vec<Vec<Event>>,
 }
 
+impl Default for EventLog {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl EventLog {
     pub fn new() -> Self {
         EventLog { events: Vec::new() }
