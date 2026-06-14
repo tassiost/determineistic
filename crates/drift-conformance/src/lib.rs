@@ -171,3 +171,115 @@ mod tests {
         }
     }
 }
+
+#[cfg(test)]
+mod heavy_scale_tests {
+    use super::*;
+    use drift_protocol::{
+        ArithmeticContract, DivisionMode, Event, OverflowMode, PrecisionMode, SpatialSchedule,
+        WorldGenesis,
+    };
+    use drift_runtime_cpu::EventLog;
+
+    #[test]
+    #[ignore]
+    fn test_heavy_scale_100k_ticks() {
+        // Heavy scale test: 100k ticks for local/dev validation
+        // Run with: cargo test -- --ignored test_heavy_scale_100k_ticks
+        let genesis = WorldGenesis {
+            protocol_version: 0,
+            universe_definition: drift_protocol::UniverseDefinition {
+                protocol_version: 0,
+                universe_type_id: 1,
+                ruleset_id: 0,
+                arithmetic_contract: ArithmeticContract {
+                    overflow: OverflowMode::Wrap,
+                    division: DivisionMode::TruncateTowardZero,
+                    precision: PrecisionMode::IntegerOnly,
+                },
+                spatial_schedule: SpatialSchedule::RowMajor,
+            },
+        };
+
+        let mut event_log = EventLog::new();
+        // Sparse events spread across 100k ticks
+        event_log.add_event(Event {
+            tick: 0,
+            event_type: 0,
+            payload: [0u8; 32],
+        });
+        event_log.add_event(Event {
+            tick: 50000,
+            event_type: 0,
+            payload: [1u8; 32],
+        });
+        event_log.add_event(Event {
+            tick: 100000,
+            event_type: 0,
+            payload: [2u8; 32],
+        });
+
+        let outputs = run_simulation(&genesis, &event_log, 100000);
+        let golden_hash = outputs.last().unwrap().world_root;
+
+        // Verify determinism with fewer reps for heavy test
+        for _ in 0..2 {
+            let test_outputs = run_simulation(&genesis, &event_log, 100000);
+            let test_hash = test_outputs.last().unwrap().world_root;
+            assert_eq!(
+                test_hash, golden_hash,
+                "Determinism failed in heavy scale 100k test"
+            );
+        }
+    }
+
+    #[test]
+    #[ignore]
+    fn test_heavy_scale_1m_ticks() {
+        // Heavy scale test: 1M ticks for local/dev validation
+        // Run with: cargo test -- --ignored test_heavy_scale_1m_ticks
+        let genesis = WorldGenesis {
+            protocol_version: 0,
+            universe_definition: drift_protocol::UniverseDefinition {
+                protocol_version: 0,
+                universe_type_id: 1,
+                ruleset_id: 0,
+                arithmetic_contract: ArithmeticContract {
+                    overflow: OverflowMode::Wrap,
+                    division: DivisionMode::TruncateTowardZero,
+                    precision: PrecisionMode::IntegerOnly,
+                },
+                spatial_schedule: SpatialSchedule::RowMajor,
+            },
+        };
+
+        let mut event_log = EventLog::new();
+        // Sparse events spread across 1M ticks
+        event_log.add_event(Event {
+            tick: 0,
+            event_type: 0,
+            payload: [0u8; 32],
+        });
+        event_log.add_event(Event {
+            tick: 500000,
+            event_type: 0,
+            payload: [1u8; 32],
+        });
+        event_log.add_event(Event {
+            tick: 1000000,
+            event_type: 0,
+            payload: [2u8; 32],
+        });
+
+        let outputs = run_simulation(&genesis, &event_log, 1_000_000);
+        let golden_hash = outputs.last().unwrap().world_root;
+
+        // Single verification for very heavy test
+        let test_outputs = run_simulation(&genesis, &event_log, 1_000_000);
+        let test_hash = test_outputs.last().unwrap().world_root;
+        assert_eq!(
+            test_hash, golden_hash,
+            "Determinism failed in heavy scale 1M test"
+        );
+    }
+}
